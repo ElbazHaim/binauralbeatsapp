@@ -1,8 +1,8 @@
-# Open Binaural Beats (OpenBB)
+# Binaural Beats App
 
 ## Introduction
 
-Welcome to the Open-BB - Binaural Beats App! This application is designed to help you experience the power of binaural beats for relaxation, meditation, and more. 
+Welcome to the Binaural Beats App! This application is designed to help you experience the power of binaural beats for relaxation, meditation, and more. 
 
 ## What are Binaural Beats?
 Binaural beats are auditory illusions that can guide your mind to various states. By playing a different audio frequency in each ear, our brain perceives a 'hidden' frequency, the binaural beat - which we tune to our desired brain state wavelength.
