@@ -1,44 +1,54 @@
 import { Synth, Panner, Transport } from "tone";
 import React, { useState } from "react";
 
-const leftsynth = new Synth().toMaster();
-const rightsynth = new Synth().toMaster();
-const leftpanner = new Panner(-1).toMaster();
-const rightpanner = new Panner(1).toMaster();
-let isPlaying = false;
+class BinauralBeat {
+    constructor(leftFreq, rightFreq) {
+        this.leftSynth = new Synth().toMaster();
+        this.rightSynth = new Synth().toMaster();
+        this.leftPanner = new Panner(-1).toMaster();
+        this.rightPanner = new Panner(1).toMaster();
+        this.isPlaying = false;
 
-function startSound(leftFreq, rightFreq) {
-    leftsynth.connect(leftpanner);
-    rightsynth.connect(rightpanner);
+        this.leftSynth.connect(this.leftPanner);
+        this.rightSynth.connect(this.rightPanner);
 
-    leftsynth.triggerAttack(leftFreq);
-    rightsynth.triggerAttack(rightFreq);
-    isPlaying = true;
-}
+        this.leftFreq = leftFreq;
+        this.rightFreq = rightFreq;
+    }
 
-function stopSound() {
-    leftsynth.triggerRelease();
-    rightsynth.triggerRelease();
-    isPlaying = false;
+    start() {
+        this.leftSynth.triggerAttack(this.leftFreq);
+        this.rightSynth.triggerAttack(this.rightFreq);
+        this.isPlaying = true;
+    }
+
+    stop() {
+        this.leftSynth.triggerRelease();
+        this.rightSynth.triggerRelease();
+        this.isPlaying = false;
+    }
 }
 
 function App() {
-    const [leftPitch, setLeftPitch] = useState(64.4);
-    const [rightPitch, setRightPitch] = useState(74.4);
+    const [leftPitch, setLeftPitch] = useState(41.63);
+    const [rightPitch, setRightPitch] = useState(40.00);
     const [pitchDifference, setPitchDifference] = useState(Math.abs(leftPitch - rightPitch));
 
+    let binauralBeat;
+
     const handlePlayClick = () => {
-        if (!isPlaying) {
-            Transport.start(); // Start the Tone.js transport
+        if (!binauralBeat || !binauralBeat.isPlaying) {
+            Transport.start();
             setPitchDifference(Math.abs(leftPitch - rightPitch));
-            startSound(leftPitch, rightPitch);
+            binauralBeat = new BinauralBeat(leftPitch, rightPitch);
+            binauralBeat.start();
         }
     };
 
     const handleStopClick = () => {
-        if (isPlaying) {
-            stopSound();
-            Transport.stop(); // Stop the Tone.js transport
+        if (binauralBeat && binauralBeat.isPlaying) {
+            binauralBeat.stop();
+            Transport.stop();
         }
     };
 
